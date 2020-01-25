@@ -1,17 +1,21 @@
-import config from './config.json'
+import { config } from './App'//  './config.json'
 import React, { Component } from 'react'
 
-
+//var dom, tok
 
 function auth() {
     if (window.BX24) {
         window.BX24.init(function () {
+            let a = BX24.getAuth();
+            console.log("B24 before module config", config);
+            config.domain = a.domain;// BX24.getAuth().domain;
+            config.token = a.access_token;// BX24.getAuth().access_token;
 
-            config.domain = BX24.getAuth().domain;
-            config.token = BX24.getAuth().access_token;
+            dom = a.domain;
+            tok = a.access_token;
 
             // console.log("B24 from module 1", BX24.getAuth());
-            console.log("B24 from module config", config);
+            console.log("B24 from module config", a, config);
 
         });
     }
@@ -21,7 +25,7 @@ function auth() {
 
 //все списки
 function getLists() {
-    auth();
+    alert(config.token)
     let addr = "rest/lists.get";
     let params = "&IBLOCK_TYPE_ID=lists"
     let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`

@@ -22,37 +22,6 @@ class YandexRoutes extends Component {
     onLoadMap = (apiobj) => {
         console.log("apiobj", apiobj);
         this.ymapi = apiobj;
-
-        //или закинуть эти oбъекты в App?
-        /*
-                var self = this;
-                apiobj.route([
-                    'Челябинск, улица Косарева, 52Б',
-                    {
-                        point: 'Челябинск,Молдавская, 11',
-                        type: 'viaPoint'
-                    },
-                    {
-                        point: 'Челябинск,Бродокалмакский тракт, 6А',
-                        type: 'viaPoint'
-                    },
-                    {
-                        point: 'Челябинск,Энгельса, 129',
-                        type: 'viaPoint'
-                    },
-                    {
-                        point: 'Челябинск,проспект Ленина, 81',
-                        type: 'viaPoint'
-                    },
-                    'Челябинск, улица Косарева, 52'
-                ]).then(function (route) {
-                    console.log("Route", route)
-                    //debugger;
-                    self.mapInstance.geoObjects.add(route);
-                    console.log("Map", self.mapInstance)
-                })
-        */
-
     }
 
     render() {
@@ -66,11 +35,11 @@ class YandexRoutes extends Component {
                 <div style={{ width: 605, heigth: 605, margin: '10px auto' }}>
 
                     <div >
-                        <Button onClick={this.onClickCalc}>Calc</Button>
+                        <Button onClick={this.onClickCalc}>Построить маршрут</Button>
                     </div>
                     <Map defaultState={{
                         center: [55.15886, 61.40255],
-                        zoom: 9
+                        zoom: 13
                     }}
                         //width={600} height={600}
                         style={{ margin: '20px auto', width: 600, height: 600 }}

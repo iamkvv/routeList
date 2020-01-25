@@ -28,6 +28,7 @@ class RouteList extends Component {
     }
 
     componentDidMount() {
+
         //получить массив списков и выбрать ID МаршЛиста и Заданий
         getLists().then(data => {
             let routelist = data.result.filter(list => list.NAME === "Маршрутный лист")[0];
@@ -220,7 +221,7 @@ class RouteList extends Component {
                             onCreateTask={this.onOKAddTask}
                         />
 
-                        <div>
+                        <div style={{ margin: '15px' }}>
                             <Button type="primary" onClick={this.showAddRouteList_Form} style={{ marginLeft: 8 }}>
                                 Новый маршрутный лист
                             </Button>
@@ -265,7 +266,7 @@ class RouteList extends Component {
                 </Row>
                 <Row>
                     <Col span={24}>
-                        <ButtonGroup>
+                        <ButtonGroup style={{ margin: '15px' }}>
                             <Button onClick={this.showAddTask_Form}>Новая задача</Button>
                             <Button onClick={this.buildTasks}>Поставить задачи</Button>
                         </ButtonGroup>

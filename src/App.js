@@ -4,12 +4,7 @@ import React, { Component } from 'react'
 import { Tabs, Row, Col, message } from 'antd';
 import { LocaleProvider } from 'antd';
 import ruRU from 'antd/lib/locale-provider/ru_RU';
-
-
-//import { convertRouteListArray } from './helper'
-
 import RouteList from './routeList'
-//import RouteManager from './routeManager'
 import YandexRoutes from './YandexRoutes'
 
 const { TabPane } = Tabs;
@@ -40,7 +35,9 @@ const { TabPane } = Tabs;
  */
 
 class App extends Component {
-  state = { tasksByRouteList: [] };
+  state = {
+    tasksByRouteList: [] //задания выбранного марш. листа (для Yandex maps)
+  };
 
   handleChange = date => {
     message.info(`Selected Date: ${date ? date.format('YYYY-MM-DD') : 'None'}`);
@@ -48,26 +45,15 @@ class App extends Component {
   };
 
   setRouteListTasks = (arr) => {
-
-    console.log("setRouteListTasks!!!", arr);
-
     this.setState({ tasksByRouteList: arr })
   }
 
-  TabsCallback(key) {
-    console.log(key);
-  }
-
+  //переименовать
   rootfunc = (api, map) => {
     console.log("from APP ", api, map)
 
-    // var arrRoute = this.state.tasksByRouteList.map(function (_i,tsk, ) {
-    //   console.log("ind tsk", _i, tsk);
-    //   return tsk.ADDRESS
-    // });
-
     var arrRoute = [];
-
+    //переделать в map!! ??
     for (var i = 0; i < this.state.tasksByRouteList.length; i++) {
       if (i == 0) {
         arrRoute.push(this.state.tasksByRouteList[i].ADDRESS)
@@ -80,30 +66,9 @@ class App extends Component {
       }
     }
 
-    console.log("arrRoute", arrRoute);
-
     api.route(
       arrRoute
-      //   [
-      //   'Челябинск, улица Косарева, 52Б',
-      //   {
-      //     point: 'Челябинск,Молдавская, 11',
-      //     type: 'viaPoint'
-      //   },
-      //   {
-      //     point: 'Челябинск,Бродокалмакский тракт, 6А',
-      //     type: 'viaPoint'
-      //   },
-      //   {
-      //     point: 'Челябинск,Энгельса, 129',
-      //     type: 'viaPoint'
-      //   },
-      //   {
-      //     point: 'Челябинск,проспект Ленина, 81',
-      //     type: 'viaPoint'
-      //   },
-      //   'Челябинск, улица Косарева, 52Б'
-      // ]
+
     ).then(function (route) {
 
       map.geoObjects.add(route);
@@ -136,9 +101,7 @@ class App extends Component {
       // Выводим маршрутный лист.
       // $('#list').append(moveList);
       // $('#meters').append(meters/1000);
-      alert(Math.round(meters / 1000))
-
-
+      alert("Длина маршрута " + Math.round(meters / 1000) + " км")
 
     })
   }
@@ -148,7 +111,7 @@ class App extends Component {
       <LocaleProvider locale={ruRU}>
         <Row type="flex" justify="center" align="top">
           <Col span={19}>
-            <Tabs defaultActiveKey="1" onChange={this.TabsCallback}>
+            <Tabs defaultActiveKey="1">
               <TabPane tab="Маршрутные листы" key="1">
                 <RouteList setRouteListTasks={this.setRouteListTasks} />
               </TabPane>
@@ -158,7 +121,7 @@ class App extends Component {
             </Tabs>
           </Col>
           <Col span={4}>
-            <h2>test</h2>
+            <h2 style={{ marginTop: 35, marginLeft: 15, color: 'cadetblue' }}>Место для итоговых отчетов</h2>
           </Col>
         </Row>
       </LocaleProvider>
