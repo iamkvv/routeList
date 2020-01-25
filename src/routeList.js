@@ -9,7 +9,6 @@ import { BuildTasks } from './buildsTasks'
 
 const ButtonGroup = Button.Group;
 
-
 class RouteList extends Component {
     constructor(props) {
         super(props);
@@ -33,7 +32,7 @@ class RouteList extends Component {
         getLists().then(data => {
             let routelist = data.result.filter(list => list.NAME === "Маршрутный лист")[0];
             let tasklist = data.result.filter(list => list.NAME === "Задания")[0];
-
+            console.log("все списки", data);
             if (!routelist || !tasklist) {
                 alert("Не созданы списки Маршрутных листов или Заданий")
             } else {
@@ -45,7 +44,6 @@ class RouteList extends Component {
         })
             .then(() => {//все марш листы
                 getRoutelist(this.state.routeListID).then(data => {
-                    debugger;
 
                     if (data.result.length > 0) {
                         this.setState({ routeListData: convertRouteListArray(data.result) });
@@ -72,10 +70,7 @@ class RouteList extends Component {
 
                 })
             })
-            .then(data => {
-                console.log("3 then", data);
-            })
-            .catch(error => console.error("ERR getLists", error));
+            .catch(error => console.error("Ошибка в getLists", error));
     }
 
     showAddTask_Form = () => {
