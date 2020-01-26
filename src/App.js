@@ -11,6 +11,13 @@ const { TabPane } = Tabs;
 
 /**
  * 
+ * добавить задачу со ссылкой на компанию
+ * https://anywhere.bitrix24.ru/rest/tasks.task.add?auth=92a72d5ea584efae697&fields[RESPONSIBLE_ID]=1&fields[TITLE]=для проверки10&fields[DESCRIPTION]=qwe
+asd
+&fields[UF_CRM_TASK][0]=CO_38
+* также см. https://dev.1c-bitrix.ru/rest_help/tasks/task/item/add.php
+*
+ * 
  * компании с польз. полями
  * юр. адрес "UF_CRM_5E1D86B235DB7": "Челябинск, энгельса 44 ЮР"
  * https://anywhere.bitrix24.ru/rest/crm.company.list?filter[%TITLE]=Вось&auth=cf8d295e0043baa40031392000000001201c03ba39ef4407b76c6cdc429dcc32ecc79d&select[]=UF_*&select[]=TITLE
@@ -39,71 +46,8 @@ class App extends Component {
     tasksByRouteList: [] //задания выбранного марш. листа (для Yandex maps)
   };
 
-  handleChange = date => {
-    message.info(`Selected Date: ${date ? date.format('YYYY-MM-DD') : 'None'}`);
-    this.setState({ date });
-  };
-
   setRouteListTasks = (arr) => {
     this.setState({ tasksByRouteList: arr })
-  }
-
-  //переименовать
-  rootfunc = (api, map) => {
-    console.log("from APP ", api, map)
-
-    var arrRoute = [];
-    //переделать в map!! ??
-    for (var i = 0; i < this.state.tasksByRouteList.length; i++) {
-      if (i == 0) {
-        arrRoute.push(this.state.tasksByRouteList[i].ADDRESS)
-      }
-      if (i > 0 & i < this.state.tasksByRouteList.length - 1) {
-        arrRoute.push(Object.assign({}, { point: this.state.tasksByRouteList[i].ADDRESS, type: 'viaPoint' }))
-      }
-      if (i == this.state.tasksByRouteList.length - 1) {
-        arrRoute.push(this.state.tasksByRouteList[i].ADDRESS)
-      }
-    }
-
-    api.route(
-      arrRoute
-
-    ).then(function (route) {
-
-      map.geoObjects.add(route);
-
-      var points = route.getWayPoints(),
-        lastPoint = points.getLength() - 1;
-      // Задаем стиль метки - иконки будут красного цвета, и
-      // их изображения будут растягиваться под контент.
-      points.options.set('preset', 'islands#redStretchyIcon');
-      // Задаем контент меток в начальной и конечной точках.
-      points.get(0).properties.set('iconContent', 'Точка отправления');
-      points.get(lastPoint).properties.set('iconContent', 'Точка прибытия');
-
-      var moveList = 'Трогаемся,</br>',
-        way,
-        segments;
-      var meters = 0;
-      // Получаем массив путей.
-      for (var i = 0; i < route.getPaths().getLength(); i++) {
-        way = route.getPaths().get(i);
-        segments = way.getSegments();
-        for (var j = 0; j < segments.length; j++) {
-          var street = segments[j].getStreet();
-          meters += segments[j].getLength();
-          moveList += ('Едем ' + segments[j].getHumanAction() + (street ? ' на ' + street : '') + ', проезжаем ' + segments[j].getLength() + ' м.,');
-          moveList += '</br>'
-        }
-      }
-      moveList += 'Останавливаемся.';
-      // Выводим маршрутный лист.
-      // $('#list').append(moveList);
-      // $('#meters').append(meters/1000);
-      alert("Длина маршрута " + Math.round(meters / 1000) + " км")
-
-    })
   }
 
   render() {
@@ -116,12 +60,13 @@ class App extends Component {
                 <RouteList setRouteListTasks={this.setRouteListTasks} />
               </TabPane>
               <TabPane tab="Yandex карта" key="2">
-                <YandexRoutes rootfunc={this.rootfunc} />
+                {/** <YandexRoutes rootfunc={this.rootfunc} /> */}
+                <YandexRoutes tasksByRouteList={this.state.tasksByRouteList} />
               </TabPane>
             </Tabs>
           </Col>
           <Col span={4}>
-            <h2 style={{ marginTop: 35, marginLeft: 15, color: 'cadetblue' }}>Место для итоговых отчетов</h2>
+            <h2 className="reports" style={{ marginTop: 35, marginLeft: 15, color: 'cadetblue' }}>Место для итоговых отчетов</h2>
           </Col>
         </Row>
       </LocaleProvider>

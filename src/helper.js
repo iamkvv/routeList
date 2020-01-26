@@ -78,7 +78,7 @@ const columns = [
                 <a>Удалить</a>
             </span>
         ),
-    },
+    }
 ];
 
 const taskColumns = [
@@ -109,6 +109,18 @@ const taskColumns = [
         key: 'address',
         render: text => <p> {text}</p>
     },
+
+    {
+        title: 'Действия',
+        key: 'action',
+        render: (text, record) => (
+            <span>
+                <a>Изменить</a>
+                <Divider type="vertical" />
+                <a>Удалить</a>
+            </span>
+        ),
+    }
 
     // {
     //     title: 'Задание',

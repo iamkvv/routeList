@@ -14,10 +14,15 @@ function checkAuth() {
 
         if (window.BX24) {
             let a = BX24.getAuth();
+            let conf = {
+                domain: a.domain,
+                token: a.access_token
+            }
+            resolve(conf)
         } else {
             let conf = {
                 domain: "anywhere.bitrix24.ru",
-                token: '3d242c5e0043ea4c0031392000000001201c0372dab142cc3821f130ef2bad2aae9d08'
+                token: '2dc52d5e0043ea4c0031392000000001201c033273ce05a0e642bffe5819ba035acea4'
             }
             //setTimeout(() => resolve(conf), 300);
             resolve(conf)
@@ -177,14 +182,15 @@ function getCompanies() {
 }
 
 //Создает задачу !!Проверить <BR>
-function addTask(title, resp_id, task, gis) {
+function addTask(title, resp_id, task, gis, company_id) {
     return checkAuth()
         .then((config) => {
             let tsk = task.replace(/\n/g, "<br>")
             tsk = tsk.replace(/\r\n/g, "<br>")
             let content = tsk + "<br>" + "Открыть 2GIS: " + gis;
             let addr = "rest/tasks.task.add";
-            let params = `&fields[RESPONSIBLE_ID]=${resp_id}&fields[TITLE]=${title}&fields[DESCRIPTION]=${content}`
+            let company = 'fields[UF_CRM_TASK][0]=CO_' + company_id;
+            let params = `&fields[RESPONSIBLE_ID]=${resp_id}&fields[TITLE]=${title}&fields[DESCRIPTION]=${content}&${company}`
             let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`;
 
             return fetch(request, {

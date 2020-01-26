@@ -1,48 +1,82 @@
-.App {
-  height: 100%;
-  min-height: 400px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-}
-
-.App-flex {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.App-heading {
-  background-color: #222;
-  color: #f8f8f8;
-  font-size: 6vh;
-  box-shadow: 0px 4px 4vh 4px rgba(34,34,34,0.9);
-  z-index: 2;
-}
-
-.App-react {
-  color: #00d8ff;
-  text-decoration: overline underline;
-}
-
-.App-logo {
-  max-height: 30vh;
-  max-width: 30vh;
-}
-
-.App-instructions {
-  background-color: #f8f8f8;
-  color: #222;
-  font-size: 3vh;
-  line-height: 1.5;
-  padding: 0 1em;
-}
-
-.App-instructions code {
-  background-color: #222;
-  color: #00d8ff;
-  padding: .2em .3em;
-  border-radius: .2em;
-}
+ .selected-routelist {
+   /*для подсветки выбранного марш.листа*/
+   background-color: beige;
+ }
+ 
+ @media print {
+   .reports {
+     display: none
+   }
+   .task-list-print {
+     display: block;
+     border-collapse: collapse;
+     margin: 0 auto;
+   }
+   .task-list-print tr td {
+     border: 1px solid gray;
+   }
+ }
+ 
+ @media screen {
+   .task-list-print {
+     display: none;
+   }
+ }
+ /* .task-list-print {
+   border-collapse: collapse;
+   margin: 0 auto;
+ }
+ 
+ .task-list-print tr td {
+   border: 1px solid black;
+ }
+  */
+ 
+ .App {
+   height: 100%;
+   min-height: 400px;
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   justify-content: stretch;
+ }
+ 
+ .App-flex {
+   flex: 1;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+ 
+ .App-heading {
+   background-color: #222;
+   color: #f8f8f8;
+   font-size: 6vh;
+   box-shadow: 0px 4px 4vh 4px rgba(34, 34, 34, 0.9);
+   z-index: 2;
+ }
+ 
+ .App-react {
+   color: #00d8ff;
+   text-decoration: overline underline;
+ }
+ 
+ .App-logo {
+   max-height: 30vh;
+   max-width: 30vh;
+ }
+ 
+ .App-instructions {
+   background-color: #f8f8f8;
+   color: #222;
+   font-size: 3vh;
+   line-height: 1.5;
+   padding: 0 1em;
+ }
+ 
+ .App-instructions code {
+   background-color: #222;
+   color: #00d8ff;
+   padding: .2em .3em;
+   border-radius: .2em;
+ }

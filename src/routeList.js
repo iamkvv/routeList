@@ -12,7 +12,9 @@ const ButtonGroup = Button.Group;
 class RouteList extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
+            selectedRowIndex: 0,
             routeListID: 0,
             taskListID: 0,
             addRouteListVisible: false,
@@ -32,7 +34,7 @@ class RouteList extends Component {
         getLists().then(data => {
             let routelist = data.result.filter(list => list.NAME === "Маршрутный лист")[0];
             let tasklist = data.result.filter(list => list.NAME === "Задания")[0];
-            console.log("все списки", data);
+
             if (!routelist || !tasklist) {
                 alert("Не созданы списки Маршрутных листов или Заданий")
             } else {
@@ -48,21 +50,24 @@ class RouteList extends Component {
                     if (data.result.length > 0) {
                         this.setState({ routeListData: convertRouteListArray(data.result) });
                     } else { return }
-                }).then(() => {
+                }).then(() => {//задания по первому марш. листу
                     if (this.state.routeListData.length > 0) {
-                        this.setState({ selectedRouteList: this.state.routeListData[0] })
-                        console.log("after get routesList", this.state.routeListData[0])
+                        this.setState({ selectedRouteList: this.state.routeListData[0] });
+                        console.log("after get routesList", this.state.routeListData[0]);
                     }
                 }).then(() => {//получить связанные задачи
-
                     if (this.state.routeListData.length > 0) {
 
                         getTasksBykey(this.state.taskListID, this.state.selectedRouteList.ID).then((data) => {
                             console.log("tasks by key ", data);
                             if (data.result.length > 0) {
-                                this.setState({
-                                    tasksByRouteList: convertTaskArray(data.result),
-                                });
+                                let convertedTaskArray = convertTaskArray(data.result);
+                                this.setState(
+                                    {
+                                        tasksByRouteList: convertedTaskArray
+                                    },
+                                    this.props.setRouteListTasks(convertedTaskArray)//задания 1-го листа - в state App
+                                );
                             }
                         })
 
@@ -101,22 +106,20 @@ class RouteList extends Component {
             data.company.PHONE[0].VALUE,
             data.task,
             data.company.UF_CRM_5E1D86B235DB7, //address
-        ).then(data => {
+        )
+            .then(data => {
+                getTasksBykey(this.state.taskListID, this.state.selectedRouteList.ID).then((data) => {
+                    self.props.setRouteListTasks(convertTaskArray(data.result));
 
-            getTasksBykey(this.state.taskListID, this.state.selectedRouteList.ID).then((data) => {
-                console.log("tasks by key ", data);
+                    this.setState({
+                        tasksByRouteList: convertTaskArray(data.result),
+                        addTaskVisible: false
+                    });
+                })
 
-                self.props.setRouteListTasks(convertTaskArray(data.result));
 
-                this.setState({
-                    tasksByRouteList: convertTaskArray(data.result),
-                    addTaskVisible: false
-                });
+                //получить данные для задач
             })
-
-
-            //получить данные для задач
-        })
     }
 
     showAddRouteList_Form = () => {//Открыть форму добавления марш-го листа
@@ -135,22 +138,19 @@ class RouteList extends Component {
     };
 
     onCancelAddRouteList = (form) => {
-        alert('Cancel');
         form.resetFields();
         this.setState({ addRouteListVisible: false });
     }
 
     onCancelAddTask = (form) => {
-        alert('Cancel Task');
         form.resetFields();
         this.setState({ addTaskVisible: false });
     }
 
     //сохраниться и обновиться
     onOKAddRouteList = (data, form) => {
-        alert('OK');
-        console.log("submit OK", data);
 
+        console.log("submit OK", data);
 
         form.resetFields();
 
@@ -184,8 +184,8 @@ class RouteList extends Component {
         this.setState({ selectedRowKeys });
     };
 
+    //создает задачи из списка заданий
     buildTasks = () => {
-
         const buildtasks = BuildTasks(this.state.tasksByRouteList);
         buildtasks();
     }
@@ -220,14 +220,17 @@ class RouteList extends Component {
                             <Button type="primary" onClick={this.showAddRouteList_Form} style={{ marginLeft: 8 }}>
                                 Новый маршрутный лист
                             </Button>
-                            <span>{this.state.selectedRouteList.ID}</span>
+
                         </div>
 
                         <Table
+                            rowClassName={(record, index) => {
+                                if (index == this.state.selectedRowIndex) return "selected-routelist"
+                            }}
                             pagination={{ pageSize: 5 }}
                             size="small"
                             scroll={{ scrollToFirstRowOnChange: true }}
-                            rowSelection={rowSelection}
+                            //  rowSelection={rowSelection}
                             rowKey={rec => (rec.ID)}
                             columns={columns}
                             dataSource={this.state.routeListData}
@@ -240,12 +243,14 @@ class RouteList extends Component {
                                         //this.setState({ selectedRouteList: record });
 
                                         document.body.style.cursor = "progress";
+
                                         getTasksBykey(this.state.taskListID, record.ID).then((data) => {
                                             console.log("tasks by key ", data);
 
                                             self.props.setRouteListTasks(convertTaskArray(data.result));
 
                                             this.setState({
+                                                selectedRowIndex: rowIndex,
                                                 selectedRouteList: record,
                                                 tasksByRouteList: convertTaskArray(data.result),
                                             });

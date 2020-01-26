@@ -13,7 +13,7 @@ const AddTask = Form.create({ name: 'taskform_in_modal' })(
             this.props.form.validateFields((err, values) => {
                 if (!err) {
 
-                    alert("OK!!")
+                    //  alert("OK!!")
                     console.log('OK', values);
                     //debugger;
                     let compObj = this.props.companies.filter(comp => comp.ID === values.company)[0];
