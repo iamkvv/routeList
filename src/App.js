@@ -46,6 +46,7 @@ class App extends Component {
     tasksByRouteList: [] //задания выбранного марш. листа (для Yandex maps)
   };
 
+  //Установка заданий марш.листа для построения маршрута в Yandex
   setRouteListTasks = (arr) => {
     this.setState({ tasksByRouteList: arr })
   }
@@ -60,7 +61,6 @@ class App extends Component {
                 <RouteList setRouteListTasks={this.setRouteListTasks} />
               </TabPane>
               <TabPane tab="Yandex карта" key="2">
-                {/** <YandexRoutes rootfunc={this.rootfunc} /> */}
                 <YandexRoutes tasksByRouteList={this.state.tasksByRouteList} />
               </TabPane>
             </Tabs>

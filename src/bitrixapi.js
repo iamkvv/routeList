@@ -22,7 +22,7 @@ function checkAuth() {
         } else {
             let conf = {
                 domain: "anywhere.bitrix24.ru",
-                token: '2dc52d5e0043ea4c0031392000000001201c033273ce05a0e642bffe5819ba035acea4'
+                token: 'd6f42d5e0043ea4c0031392000000001201c034f9f3cc8ed77056590c906bf0fda8e08'
             }
             //setTimeout(() => resolve(conf), 300);
             resolve(conf)
@@ -30,17 +30,6 @@ function checkAuth() {
     })
     //    return promAuth;
 }
-
-
-// function auth() {
-//     if (window.BX24) {
-//         window.BX24.init(function () {
-//             let a = BX24.getAuth();
-//         });
-//     }
-// }
-
-
 
 //все списки в портале для проверки
 function getLists() {
@@ -108,6 +97,25 @@ function addTasklist(iblockid, fk, date, user_id, fio, comp_id, comp, gis, phone
             let addr = "rest/lists.element.add";
             let tsk = task.replace(/\n/g, "<br>") // проверить!!!
             let params = `&fields[NAME]=МЛ-${fk}&fields[PROPERTY_236]=${fk}&fields[PROPERTY_238]=${date}&fields[PROPERTY_240]=${user_id}&fields[PROPERTY_242]=${fio}&fields[PROPERTY_244]=${comp_id}&fields[PROPERTY_248]=${comp}&fields[PROPERTY_250]=${gis}&fields[PROPERTY_252]=${phone}&fields[PROPERTY_254]=${tsk}&fields[PROPERTY_256]=${address}&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_CODE=${new Date().getTime()}`
+            let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`
+            return fetch(request, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(handleErrors)
+                .then(response => response.json())
+        })
+}
+
+//Удаление задания из списка
+function deleteTasklist(iblockid, elementid) {
+    return checkAuth()
+        .then((config) => {
+            let addr = "rest/lists.element.delete";
+            let params = `&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_ID=${elementid}`
             let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`
             return fetch(request, {
                 method: 'POST',
@@ -213,5 +221,6 @@ export {
     getCompanies,
     addTasklist,
     getTasksBykey,
-    addTask
+    addTask,
+    deleteTasklist
 };

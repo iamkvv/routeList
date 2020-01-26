@@ -6,6 +6,7 @@ import { getLists, addRoutelist, getRoutelist, getUsers, getCompanies, addTaskli
 import { convertRouteListArray, convertTaskArray, columns, taskColumns } from './helper'
 
 import { BuildTasks } from './buildsTasks'
+import DeleteTaskFromList from './deleteTaskList'
 
 const ButtonGroup = Button.Group;
 
@@ -14,7 +15,7 @@ class RouteList extends Component {
         super(props);
 
         this.state = {
-            selectedRowIndex: 0,
+            selectedRowIndex: 0,//индекс выбранного по click марш. листа (для подстветки) 
             routeListID: 0,
             taskListID: 0,
             addRouteListVisible: false,
@@ -24,12 +25,13 @@ class RouteList extends Component {
             companies: [],
             users: [],
             selectedRouteList: {},
-            tasksByRouteList: []
+            tasksByRouteList: [],
+            showDeleteTaskListDialog: false, //Показ диалога удаления марш. листа
+            taskListforDelete: {} // удаляемая запись марш. листа
         }
     }
 
     componentDidMount() {
-
         //получить массив списков и выбрать ID МаршЛиста и Заданий
         getLists().then(data => {
             let routelist = data.result.filter(list => list.NAME === "Маршрутный лист")[0];
@@ -57,7 +59,6 @@ class RouteList extends Component {
                     }
                 }).then(() => {//получить связанные задачи
                     if (this.state.routeListData.length > 0) {
-
                         getTasksBykey(this.state.taskListID, this.state.selectedRouteList.ID).then((data) => {
                             console.log("tasks by key ", data);
                             if (data.result.length > 0) {
@@ -70,9 +71,7 @@ class RouteList extends Component {
                                 );
                             }
                         })
-
                     }
-
                 })
             })
             .catch(error => console.error("Ошибка в getLists", error));
@@ -116,9 +115,6 @@ class RouteList extends Component {
                         addTaskVisible: false
                     });
                 })
-
-
-                //получить данные для задач
             })
     }
 
@@ -190,6 +186,29 @@ class RouteList extends Component {
         buildtasks();
     }
 
+    hideDeleteTaskListDialog = () => {
+        this.setState(
+            { showDeleteTaskListDialog: false }
+        )
+    }
+
+    //!!!
+    GetTasksByKey = (routeListId) => {
+        let self = this;
+        document.body.style.cursor = "progress"; //??
+        getTasksBykey(this.state.taskListID, routeListId)
+            .then((data) => {
+                console.log("tasks by key ", data);
+                //передаем полученные задания в App для последующей передачи в Yandex
+                let convertedData = convertTaskArray(data.result);
+                self.props.setRouteListTasks(convertedData);
+
+                self.setState({
+                    tasksByRouteList: convertedData
+                });
+                document.body.style.cursor = "";
+            })
+    }
 
     render() {
         const { selectedRowKeys } = this.state;
@@ -216,11 +235,18 @@ class RouteList extends Component {
                             onCreateTask={this.onOKAddTask}
                         />
 
+                        <DeleteTaskFromList
+                            visible={this.state.showDeleteTaskListDialog}
+                            taskListforDelete={this.state.taskListforDelete}
+                            hideDeleteTaskListDialog={this.hideDeleteTaskListDialog}
+                            taskListID={this.state.taskListID}
+                            refreshTaskList={this.GetTasksByKey}
+                        />
+
                         <div style={{ margin: '15px' }}>
                             <Button type="primary" onClick={this.showAddRouteList_Form} style={{ marginLeft: 8 }}>
                                 Новый маршрутный лист
                             </Button>
-
                         </div>
 
                         <Table
@@ -241,25 +267,30 @@ class RouteList extends Component {
                                     onClick: event => {
                                         console.log(event.target.text == 'Удалить', record, rowIndex);
                                         //this.setState({ selectedRouteList: record });
+                                        self.setState({
+                                            selectedRowIndex: rowIndex,
+                                            selectedRouteList: record,
+                                        });
 
-                                        document.body.style.cursor = "progress";
+                                        //document.body.style.cursor = "progress";
+                                        //
+                                        this.GetTasksByKey(record.ID)
+                                        //
+                                        // getTasksBykey(this.state.taskListID, record.ID)
+                                        //     .then((data) => {
+                                        //         console.log("tasks by key ", data);
+                                        //         //передаем полученные задания в App для последующей передачи в Yandex
+                                        //         let convertedData = convertTaskArray(data.result);
+                                        //         self.props.setRouteListTasks(convertedData);
 
-                                        getTasksBykey(this.state.taskListID, record.ID).then((data) => {
-                                            console.log("tasks by key ", data);
-
-                                            self.props.setRouteListTasks(convertTaskArray(data.result));
-
-                                            this.setState({
-                                                selectedRowIndex: rowIndex,
-                                                selectedRouteList: record,
-                                                tasksByRouteList: convertTaskArray(data.result),
-                                            });
-                                            document.body.style.cursor = "";
-                                        })
-
-
-                                    }, // click row
-                                };
+                                        //         self.setState({
+                                        //             tasksByRouteList: convertedData
+                                        //         });
+                                        //         document.body.style.cursor = "";
+                                        //     })
+                                        document.body.style.cursor = "";
+                                    }
+                                }
                             }}
                         />
                     </Col>
@@ -277,11 +308,28 @@ class RouteList extends Component {
                                 rowKey={rec => (rec.ID)}
                                 columns={taskColumns}
                                 dataSource={this.state.tasksByRouteList}
+                                onRow={(record, rowIndex) => {
+                                    var self = this;
+                                    return {
+                                        onClick: event => {
+                                            if (event.target.text === 'Удалить') {
+                                                console.log(record, rowIndex);
+                                                this.setState(
+                                                    {
+                                                        showDeleteTaskListDialog: true,
+                                                        taskListforDelete: record
+                                                    }
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                                }
                             />
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </div >
         )
     }
 }
