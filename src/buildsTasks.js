@@ -1,25 +1,25 @@
+import { addTask, updateTasklist } from './bitrixapi'
 
-import { addTask } from './bitrixapi'
-
-function setTaskAndTaskRecord(taskRecord, cb) {
+function setTaskAndTaskRecord(taskRecord, iblock_id, cb) {
     setTimeout(() => {
-        console.log("taskRecord", taskRecord);
         addTask(taskRecord.ADDRESS, taskRecord.USER_ID, taskRecord.TASK, taskRecord.GIS, taskRecord.COMPANY_ID)
             .then(data => {
-                console.log("after buildTask", data.result);
-                cb();
+                updateTasklist(taskRecord.ID, iblock_id, taskRecord.FK, taskRecord.DATE, taskRecord.USER_ID, taskRecord.FIO, taskRecord.COMPANY_ID, taskRecord.COMPANY, taskRecord.GIS, taskRecord.TEL, taskRecord.TASK, taskRecord.ADDRESS, data.result.task.id)
+                    .then(data => {
+                        console.log("after updateTasklist", data);
+                        cb();
+                    })
             })
     }, 1000);
 }
 
-function BuildTasks(arr) {
+function BuildTasks(arr, tasklist_id) {
     var curr = 0;
     function callback() {
         if (curr < arr.length) {
-            setTaskAndTaskRecord(arr[curr++], callback);
+            setTaskAndTaskRecord(arr[curr++], tasklist_id, callback);
         }
     }
-
     return callback;
 }
 

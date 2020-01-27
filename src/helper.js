@@ -33,7 +33,8 @@ function convertTaskArray(bxarr) {
             GIS: tsk.PROPERTY_250[Object.keys(tsk.PROPERTY_250)[0]],
             TEL: tsk.PROPERTY_252[Object.keys(tsk.PROPERTY_252)[0]],
             TASK: tsk.PROPERTY_254[Object.keys(tsk.PROPERTY_254)[0]],
-            ADDRESS: tsk.PROPERTY_256[Object.keys(tsk.PROPERTY_256)[0]]
+            ADDRESS: tsk.PROPERTY_256[Object.keys(tsk.PROPERTY_256)[0]],
+            TASKREF_ID: tsk.PROPERTY_258[Object.keys(tsk.PROPERTY_258)[0]]
         })
     ))
     console.log(narr)
@@ -109,6 +110,13 @@ const taskColumns = [
         key: 'address',
         render: text => <p> {text}</p>
     },
+    {
+        title: 'TaskRef',
+        dataIndex: 'TASKREF_ID',
+        key: 'tref',
+        render: text => <p> {text}</p>
+    },
+
 
     {
         title: 'Действия',

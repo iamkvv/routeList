@@ -60,7 +60,7 @@ class App extends Component {
               <TabPane tab="Маршрутные листы" key="1">
                 <RouteList setRouteListTasks={this.setRouteListTasks} />
               </TabPane>
-              <TabPane tab="Yandex карта" key="2">
+              <TabPane tab="Маршрут на Yandex-карте" key="2">
                 <YandexRoutes tasksByRouteList={this.state.tasksByRouteList} />
               </TabPane>
             </Tabs>

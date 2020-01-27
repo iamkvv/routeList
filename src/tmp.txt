@@ -1,0 +1,96 @@
+https://anywhere.bitrix24.ru/rest/lists.element.update?auth=269c2e5e0043ea4c0031392000000001201c032d7c488327d3279c45409e90049024b6&fields[NAME]=%D0%9C%D0%9B-316&fields[PROPERTY_236]=316&fields[PROPERTY_238]=01/01/2020&fields[PROPERTY_240]=1&fields[PROPERTY_242]=%D0%9A%D0%BE%D0%BD%D0%B4%D1%80%D0%B0%D1%88%D0%BA%D0%B8%D0%BD%20%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80&fields[PROPERTY_244]=24&fields[PROPERTY_248]=%D0%92%D1%82%D0%BE%D1%80%D0%B0%D1%8F%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F%20&fields[PROPERTY_250]=https://go.2gis.com/0sljv&fields[PROPERTY_252]=89127912612&fields[PROPERTY_254]=asd&fields[PROPERTY_256]=%D0%A7%D0%B5%D0%BB%D1%8F%D0%B1%D0%B8%D0%BD%D1%81%D0%BA,%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%95%D0%BB%D1%8C%D0%BA%D0%B8%D0%BD%D0%B0,%2025,&fields[PROPERTY_258]=440&IBLOCK_TYPE_ID=lists&IBLOCK_ID=64
+
+/*
+// task:
+// id: "414"
+// title: "Челябинск, ул. Энгельса 44"
+// description: "qwe<br>Открыть 2GIS: https://go.2gis.com/i11yb"
+// descriptionInBbcode: "Y"
+// declineReason: null
+// priority: "1"
+// status: "2"
+// notViewed: "N"
+// statusComplete: "1"
+// multitask: "N"
+// stageId: "0"
+// responsibleId: "1"
+// responsibleName: "Владимир"
+// responsibleLastName: "Кондрашкин"
+// responsibleSecondName: ""
+// responsibleLogin: "vkondra@gmail.com"
+// responsibleWorkPosition: "тестер"
+// responsiblePhoto: "116"
+// dateStart: null
+// durationFact: null
+// timeEstimate: "0"
+// timeSpentInLogs: null
+// replicate: "N"
+// deadline: null
+// deadlineOrig: null
+// startDatePlan: null
+// endDatePlan: null
+// createdBy: "1"
+// createdByName: "Владимир"
+// createdByLastName: "Кондрашкин"
+// createdBySecondName: ""
+// createdByLogin: "vkondra@gmail.com"
+// createdByWorkPosition: "тестер"
+// createdByPhoto: "116"
+// createdDate: "2020-01-27T09:34:27+03:00"
+// changedBy: "1"
+// changedDate: "2020-01-27T09:34:27+03:00"
+// statusChangedBy: "1"
+// statusChangedDate: "2020-01-27T09:34:27+03:00"
+// closedBy: null
+// closedDate: null
+// guid: "{4f30750e-dd05-40ec-a762-80389c8be873}"
+// xmlId: null
+// mark: null
+// allowChangeDeadline: "N"
+// allowChangeDeadlineCount: null
+// allowChangeDeadlineCountValue: null
+// allowChangeDeadlineMaxtime: null
+// allowChangeDeadlineMaxtimeValue: null
+// allowTimeTracking: "N"
+// matchWorkTime: "N"
+// taskControl: "N"
+// addInReport: "N"
+// groupId: "0"
+// forumTopicId: null
+// parentId: null
+// commentsCount: null
+// forumId: null
+// siteId: "s1"
+// subordinate: "N"
+// exchangeModified: null
+// exchangeId: null
+// outlookVersion: "1"
+// viewedDate: "2020-01-27T09:34:27+03:00"
+// deadlineCounted: "0"
+// forkedByTemplateId: null
+// favorite: "N"
+// sorting: "7296.0000000"
+// durationPlanSeconds: null
+// durationTypeAll: "days"
+// durationPlan: null
+// durationType: "days"
+// ufCrmTask: ["CO_38"]
+// ufTaskWebdavFiles: false
+// ufMailMessage: null
+// ufAuto800958922349: false
+// ufAuto935365273501: null
+// ufAuto332850220403: null
+// ufAuto447547189806: ""
+// ufAuto846917385111: null
+// auditors: []
+// accomplices: []
+// tags: []
+// checklist: []
+// files: []
+// dependsOn: []
+// group: []
+// creator: {id: "1", name: "Кондрашкин Владимир", link: "/company/personal/user/1/", icon: "https://bitrix2.cdnvideo.ru/b9028717/resize_cache/…79e91b0804811d24/image.png?h=anywhere.bitrix24.ru"}
+// responsible: {id: "1", name: "Кондрашкин Владимир", link: "/company/personal/user/1/", icon: "https://bitrix2.cdnvideo.ru/b9028717/resize_cache/…79e91b0804811d24/image.png?h=anywhere.bitrix24.ru"}
+// action: {accept: false, decline: false, complete: true, approve: false, disapprove: false, …}
+// __proto__: Object
+*/

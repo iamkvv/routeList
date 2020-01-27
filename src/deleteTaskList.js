@@ -13,7 +13,6 @@ const delTaskList = (tasklistid, record, refresh, hideCallback) => {
             } else {
                 alert("Не удалось удалить запись")
             }
-            console.log('delete then', data)
         });
     hideCallback()
 }

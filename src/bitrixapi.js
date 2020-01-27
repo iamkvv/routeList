@@ -1,5 +1,4 @@
-//import { config } from './App'//  './config.json'
-import React, { Component } from 'react'
+//import React, { Component } from 'react'
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -22,7 +21,7 @@ function checkAuth() {
         } else {
             let conf = {
                 domain: "anywhere.bitrix24.ru",
-                token: 'd6f42d5e0043ea4c0031392000000001201c034f9f3cc8ed77056590c906bf0fda8e08'
+                token: '25a52e5e0043ea4c0031392000000001201c0395f1332bb52b954447063207aafb00cd'
             }
             //setTimeout(() => resolve(conf), 300);
             resolve(conf)
@@ -96,7 +95,27 @@ function addTasklist(iblockid, fk, date, user_id, fio, comp_id, comp, gis, phone
         .then((config) => {
             let addr = "rest/lists.element.add";
             let tsk = task.replace(/\n/g, "<br>") // проверить!!!
-            let params = `&fields[NAME]=МЛ-${fk}&fields[PROPERTY_236]=${fk}&fields[PROPERTY_238]=${date}&fields[PROPERTY_240]=${user_id}&fields[PROPERTY_242]=${fio}&fields[PROPERTY_244]=${comp_id}&fields[PROPERTY_248]=${comp}&fields[PROPERTY_250]=${gis}&fields[PROPERTY_252]=${phone}&fields[PROPERTY_254]=${tsk}&fields[PROPERTY_256]=${address}&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_CODE=${new Date().getTime()}`
+            let params = `&fields[NAME]=МЛ-${fk}&fields[PROPERTY_236]=${fk}&fields[PROPERTY_238]=${date}&fields[PROPERTY_240]=${user_id}&fields[PROPERTY_242]=${fio}&fields[PROPERTY_244]=${comp_id}&fields[PROPERTY_248]=${comp}&fields[PROPERTY_250]=${gis}&fields[PROPERTY_252]=${phone}&fields[PROPERTY_254]=${tsk}&fields[PROPERTY_256]=${address}&fields[PROPERTY_258]=0&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_CODE=${new Date().getTime()}`
+            let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`
+            return fetch(request, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(handleErrors)
+                .then(response => response.json())
+        })
+}
+
+//Обновлeние задания в списке
+function updateTasklist(elementid, iblockid, fk, date, user_id, fio, comp_id, comp, gis, phone, task, address, taskref_id) {
+    return checkAuth()
+        .then((config) => {
+            let addr = "rest/lists.element.update";
+            //let tsk = task.replace(/\n/g, "<br>") // проверить!!!
+            let params = `&fields[NAME]=МЛ-${fk}&fields[PROPERTY_236]=${fk}&fields[PROPERTY_238]=${date}&fields[PROPERTY_240]=${user_id}&fields[PROPERTY_242]=${fio}&fields[PROPERTY_244]=${comp_id}&fields[PROPERTY_248]=${comp}&fields[PROPERTY_250]=${gis}&fields[PROPERTY_252]=${phone}&fields[PROPERTY_254]=${task}&fields[PROPERTY_256]=${address}&fields[PROPERTY_258]=${taskref_id}&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_ID=${elementid}`
             let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`
             return fetch(request, {
                 method: 'POST',
@@ -220,6 +239,7 @@ export {
     getUsers,
     getCompanies,
     addTasklist,
+    updateTasklist,
     getTasksBykey,
     addTask,
     deleteTasklist

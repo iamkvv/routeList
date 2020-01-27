@@ -107,14 +107,16 @@ class RouteList extends Component {
             data.company.UF_CRM_5E1D86B235DB7, //address
         )
             .then(data => {
-                getTasksBykey(this.state.taskListID, this.state.selectedRouteList.ID).then((data) => {
-                    self.props.setRouteListTasks(convertTaskArray(data.result));
+                getTasksBykey(this.state.taskListID, this.state.selectedRouteList.ID)
+                    .then((data) => {
+                        console.log("Данные задания", data.resut)
+                        self.props.setRouteListTasks(convertTaskArray(data.result));
 
-                    this.setState({
-                        tasksByRouteList: convertTaskArray(data.result),
-                        addTaskVisible: false
-                    });
-                })
+                        this.setState({
+                            tasksByRouteList: convertTaskArray(data.result),
+                            addTaskVisible: false
+                        });
+                    })
             })
     }
 
@@ -182,7 +184,7 @@ class RouteList extends Component {
 
     //создает задачи из списка заданий
     buildTasks = () => {
-        const buildtasks = BuildTasks(this.state.tasksByRouteList);
+        const buildtasks = BuildTasks(this.state.tasksByRouteList, this.state.taskListID); //передаем список заданий и ID списка "Задания"
         buildtasks();
     }
 
@@ -298,7 +300,7 @@ class RouteList extends Component {
                 <Row>
                     <Col span={24}>
                         <ButtonGroup style={{ margin: '15px' }}>
-                            <Button onClick={this.showAddTask_Form}>Новая задача</Button>
+                            <Button onClick={this.showAddTask_Form}>Добавить маршрут</Button>
                             <Button onClick={this.buildTasks}>Поставить задачи</Button>
                         </ButtonGroup>
                         <div>
