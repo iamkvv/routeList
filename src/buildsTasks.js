@@ -10,7 +10,7 @@ function setTaskAndTaskRecord(taskRecord, iblock_id, cb) {
                         cb();
                     })
             })
-    }, 1000);
+    }, 300);
 }
 
 function BuildTasks(arr, tasklist_id) {

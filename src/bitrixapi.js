@@ -21,7 +21,7 @@ function checkAuth() {
         } else {
             let conf = {
                 domain: "anywhere.bitrix24.ru",
-                token: '25a52e5e0043ea4c0031392000000001201c0395f1332bb52b954447063207aafb00cd'
+                token: '1a00305e0043ea4c0031392000000001201c0389363b29f541386ba916136a34c31ce2'
             }
             //setTimeout(() => resolve(conf), 300);
             resolve(conf)
@@ -55,7 +55,7 @@ function getRoutelist(iblockid) {
     return checkAuth()
         .then((config) => {
             let addr = "rest/lists.element.get";
-            let params = `&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}`; //д.б. 60
+            let params = `&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}`; //д.б. 60 и 64
             let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`
 
             return fetch(request, {
@@ -74,8 +74,8 @@ function getRoutelist(iblockid) {
 function addRoutelist(iblockid, user_id, fio, date, comment) {
     return checkAuth()
         .then((config) => {
-            let addr = "rest/lists.element.add";
-            let params = `&fields[NAME]=${date}-${fio}&fields[PROPERTY_228]=${user_id}&fields[PROPERTY_230]=${fio}&fields[PROPERTY_232]=${date}&fields[PROPERTY_234]=${comment}&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_CODE=${new Date().getTime()}`;
+            let addr = "rest/lists.element.add"; //Длина по умолч =0
+            let params = `&fields[NAME]=${date}-${fio}&fields[PROPERTY_260]=0&fields[PROPERTY_228]=${user_id}&fields[PROPERTY_230]=${fio}&fields[PROPERTY_232]=${date}&fields[PROPERTY_234]=${comment}&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_CODE=${new Date().getTime()}`;
             let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`
             return fetch(request, {
                 method: 'POST',
@@ -88,6 +88,28 @@ function addRoutelist(iblockid, user_id, fio, date, comment) {
                 .then(response => response.json())
         })
 }
+
+//Обновление марш. листа
+function updateRoutelist(elementid, iblockid, name, user_id, fio, date, comment, path) {
+    return checkAuth()
+        .then((config) => {
+            let addr = "rest/lists.element.update";
+            let params = `&fields[NAME]=${name}&fields[PROPERTY_228]=${user_id}&fields[PROPERTY_230]=${fio}&fields[PROPERTY_232]=${date}&fields[PROPERTY_234]=${comment}&fields[PROPERTY_260]=${path}&IBLOCK_TYPE_ID=lists&IBLOCK_ID=${iblockid}&ELEMENT_ID=${elementid}`;
+            let request = `https://${config.domain}/${addr}?auth=${config.token}${params}`
+            return fetch(request, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(handleErrors)
+                .then(response => response.json())
+        })
+}
+
+
+
 
 //Добавление задания в список
 function addTasklist(iblockid, fk, date, user_id, fio, comp_id, comp, gis, phone, task, address) {
@@ -235,6 +257,7 @@ function addTask(title, resp_id, task, gis, company_id) {
 export {
     getLists,
     addRoutelist,
+    updateRoutelist,
     getRoutelist,
     getUsers,
     getCompanies,

@@ -43,6 +43,7 @@ asd
 
 class App extends Component {
   state = {
+    currentRouteList: {}, //текущий Марш. лист
     tasksByRouteList: [] //задания выбранного марш. листа (для Yandex maps)
   };
 
@@ -50,6 +51,13 @@ class App extends Component {
   setRouteListTasks = (arr) => {
     this.setState({ tasksByRouteList: arr })
   }
+  //Установка текущего марш. листа (в Yandex будет обновлено поле Path)
+  setCurrentRouteList = (routeObj) => {
+    console.log("setCurrentRouteList", routeObj);
+    this.setState({ currentRouteList: routeObj })
+  }
+
+
 
   render() {
     return (
@@ -58,10 +66,10 @@ class App extends Component {
           <Col span={19}>
             <Tabs defaultActiveKey="1">
               <TabPane tab="Маршрутные листы" key="1">
-                <RouteList setRouteListTasks={this.setRouteListTasks} />
+                <RouteList setCurrentRouteList={this.setCurrentRouteList} setRouteListTasks={this.setRouteListTasks} />
               </TabPane>
               <TabPane tab="Маршрут на Yandex-карте" key="2">
-                <YandexRoutes tasksByRouteList={this.state.tasksByRouteList} />
+                <YandexRoutes currentRouteList={this.state.currentRouteList} tasksByRouteList={this.state.tasksByRouteList} />
               </TabPane>
             </Tabs>
           </Col>

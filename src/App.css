@@ -2,8 +2,7 @@
    /*для подсветки выбранного марш.листа*/
    background-color: beige;
  }
- 
- @media print {
+ /* @media print {
    .reports {
      display: none
    }
@@ -21,6 +20,16 @@
    .task-list-print {
      display: none;
    }
+ } */
+ 
+ .task-list-print {
+   display: block;
+   border-collapse: collapse;
+   margin: 0 auto;
+ }
+ 
+ .task-list-print tr td {
+   border: 1px solid gray;
  }
  /* .task-list-print {
    border-collapse: collapse;

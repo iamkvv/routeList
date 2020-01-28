@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { YMaps, Map } from 'react-yandex-maps';
 import { Button, message } from 'antd';
+import { updateRoutelist } from './bitrixapi'
 
 class YandexRoutes extends Component {
     constructor(props) {
@@ -13,22 +14,18 @@ class YandexRoutes extends Component {
     mapInstance = null;
     ymapi = null;
 
-    componentDidMount() {
-        console.log("DID Yandex didMount", this.props.tasksByRouteList)
-        console.log("DID Yandex objs ", this.ymapi, this.mapInstance)
-    }
+    // componentDidMount() {
+    //     console.log("DID Yandex didMount", this.props.tasksByRouteList)
+    //     console.log("DID Yandex objs ", this.ymapi, this.mapInstance)
+    // }
     onLoadMap = (apiobj) => {
-        console.log("apiobj", apiobj);//маршрут уже можно строить
-        console.log("mapInstance", this.mapInstance);
-
+        // console.log("apiobj", apiobj);//маршрут уже можно строить
+        // console.log("mapInstance", this.mapInstance);
         this.ymapi = apiobj;
     }
 
     createRoute = () => {
-        console.log("from createRoute api", this.ymapi)
-        console.log("from createRoute map", this.mapInstance)
         const { tasksByRouteList } = this.props;
-        console.log("tasksByRouteList", tasksByRouteList)
 
         var RouteAddrs = [];
         //переделать в map!! ??
@@ -44,14 +41,14 @@ class YandexRoutes extends Component {
             }
         }
 
-        console.log("arrRoute", RouteAddrs)
+        //console.log("arrRoute", RouteAddrs)
         let self = this;
         this.ymapi.route(
             RouteAddrs
 
         ).then(function (route) {
 
-            console.log("Map Objs ", self.mapInstance.geoObjects)
+            //  console.log("Map Objs ", self.mapInstance.geoObjects)
             self.mapInstance.geoObjects.removeAll()
             self.mapInstance.geoObjects.add(route);
 
@@ -84,14 +81,30 @@ class YandexRoutes extends Component {
             //массив заданий для вывода под картой
             let tasks = tasksByRouteList.map(tsk => ({ Company: tsk.COMPANY, Tel: tsk.TEL, Address: tsk.ADDRESS, Task: tsk.TASK }))
 
-            console.log("PrintTasks!!", tasks);
+            // console.log("PrintTasks!!", tasks);
 
             self.setState({ taskList: tasks });
             // Выводим маршрутный лист.
             // $('#list').append(moveList);
             // $('#meters').append(meters/1000);
             //alert("Длина маршрута " + Math.round(meters / 1000) + " км")
-            message.info(`Длина маршрута : ${Math.round(meters / 1000)} км`);
+
+            //(elementid,iblockid, name, user_id, fio, date, comment,path)
+
+            updateRoutelist(self.props.currentRouteList.ID,
+                60,
+                self.props.currentRouteList.NAME,
+                self.props.currentRouteList.USER_ID,
+                self.props.currentRouteList.FIO,
+                self.props.currentRouteList.DATE,
+                self.props.currentRouteList.COMMENT,
+                Math.round(meters / 1000)
+            )
+                .then(data => {
+                    //  console.log("after UpdateRouteList", data);
+                    message.info(`Длина маршрута : ${Math.round(meters / 1000)} км`);
+                })
+
 
         })
     }
@@ -124,7 +137,8 @@ class YandexRoutes extends Component {
                         style={{ margin: '20px auto', width: 600, height: 600 }}
                         instanceRef={(map) => this.mapInstance = map}
                         onLoad={(y) => {
-                            console.log("Map onLoad", this, y); this.onLoadMap(y)
+                            // console.log("Map onLoad", this, y); 
+                            this.onLoadMap(y)
                         }}
                     >
 

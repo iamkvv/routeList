@@ -11,7 +11,8 @@ function convertRouteListArray(bxarr) {
             USER_ID: ml.PROPERTY_228[Object.keys(ml.PROPERTY_228)[0]],
             FIO: ml.PROPERTY_230[Object.keys(ml.PROPERTY_230)[0]],
             DATE: ml.PROPERTY_232[Object.keys(ml.PROPERTY_232)[0]],
-            COMMENT: ml.PROPERTY_234[Object.keys(ml.PROPERTY_234)[0]]
+            COMMENT: ml.PROPERTY_234[Object.keys(ml.PROPERTY_234)[0]],
+            PATH: ml.PROPERTY_260[Object.keys(ml.PROPERTY_260)[0]]
         })
     ))
     return narr;
@@ -66,6 +67,13 @@ const columns = [
         title: 'Комментрии',
         dataIndex: 'COMMENT',
         key: 'comment',
+        // render: text => (<p> {text}</p>),
+    },
+
+    {
+        title: 'Растояние',
+        dataIndex: 'PATH',
+        key: 'path',
         // render: text => (<p> {text}</p>),
     },
 
